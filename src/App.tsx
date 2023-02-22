@@ -3,14 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 // import './styles.css';
 import ScheduleView from './components/ScheduleView';
+import CourseSelectView from './components/CourseSelectView';
 
 export default function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <div style={{height:50}}>This is filler because of the free trial banner.</div>
         <div className="flex-container">
           <div className="flex-child-left">
-            Flex Column 1
+            <CourseSelectView />
           </div>
           <div className="flex-child-right">
             <ScheduleView />
