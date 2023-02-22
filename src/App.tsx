@@ -1,21 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Inject, ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, EventSettingsModel } from '@syncfusion/ej2-react-schedule';
-import { appointments } from './courses/selected_courses';
+// import './styles.css';
+import ScheduleView from './components/ScheduleView';
 
-function App() {
-  var localData: EventSettingsModel = { dataSource: appointments };
-
+export default function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <ScheduleComponent currentView='WorkWeek' selectedDate={new Date(2023, 0, 1)} eventSettings={localData}>
-          <Inject services={[Week, WorkWeek, Agenda]} />
-        </ScheduleComponent>
+        <div className="flex-container">
+          <div className="flex-child-left">
+            Flex Column 1
+          </div>
+          <div className="flex-child-right">
+            <ScheduleView />
+          </div> 
+        </div>
       </header>
     </div>
   );
 }
 
-export default App;
