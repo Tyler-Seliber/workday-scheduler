@@ -1,9 +1,9 @@
 import '../App.css';
 import { Inject, ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, EventSettingsModel } from '@syncfusion/ej2-react-schedule';
-import { appointments } from '../courses/selected_courses';
+import { selected_courses } from '../courses/selected_courses';
 
 function ScheduleView() {
-    var localData: EventSettingsModel = { dataSource: appointments };
+    var localData: EventSettingsModel = { dataSource: selected_courses };
 
     return (
         <div className="App">

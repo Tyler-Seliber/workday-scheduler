@@ -1,7 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-// import './styles.css';
 import ScheduleView from './components/ScheduleView';
 import CourseSelectView from './components/CourseSelectView';
 
