@@ -1,42 +1,62 @@
 export const course_list = [
     {
-        StartTime: new Date(2023, 0, 2, 12, 0),
-        EndTime: new Date(2023, 0, 2, 13, 50),
-        Subject: 'CAL 105 A - Knowledge, Nature, Culture',
-        Location: 'M 103',
-        Description: 'Instructor: Nicolosi, Antonio',
-        RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
+        courseId: "CH 117",
+        courseName: "General Chemistry Lab I",
+        sections: 
+            [{
+                Section: "A",
+                StartTime: new Date(2023, 0, 5, 11, 0),
+                EndTime: new Date(2023, 0, 5, 14, 50),
+                Location: 'X 204',
+                Description: 'Instructor: Kim, Faith',
+                RecurrenceRule: 'FREQ=WEEKLY;BYDAY=TH'
+            },
+            {
+                Section: "B",
+                StartTime: new Date(2023, 0, 2, 11, 0),
+                EndTime: new Date(2023, 0, 5, 14, 50),
+                Location: 'X 204',
+                Description: 'Instructor: Kim, Faith',
+                RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO'
+            },
+            {
+                Section: "C",
+                StartTime: new Date(2023, 0, 6, 11, 0),
+                EndTime: new Date(2023, 0, 5, 14, 50),
+                Location: 'X 204',
+                Description: 'Instructor: Kim, Faith',
+                RecurrenceRule: 'FREQ=WEEKLY;BYDAY=FR'
+            }]
+        
     },
     {
-        StartTime: new Date(2023, 0, 2, 9, 0),
-        EndTime: new Date(2023, 0, 2, 9, 50),
-        Subject: 'MA 125 B - Vectors and Series',
-        Location: 'BC 321',
-        Description: 'Instructor: Miller, Patrick',
-        RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
-    },
-    {
-        StartTime: new Date(2023, 0, 3, 10, 0),
-        EndTime: new Date(2023, 0, 3, 10, 50),
-        Subject: 'MA 125 RE - Vectors and Series',
-        Location: 'B 715',
-        Description: 'Instructor: Miller, Patrick',
-        RecurrenceRule: 'FREQ=WEEKLY;BYDAY=TU,TH'
-    },
-    {
-        StartTime: new Date(2023, 0, 2, 15, 0),
-        EndTime: new Date(2023, 0, 2, 15, 50),
-        Subject: 'CH 116 D - General Chemistry II',
-        Location: 'EAS 222',
-        Description: 'Instructor: Muisener, Patricia',
-        RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
-    },
-    {
-        StartTime: new Date(2023, 0, 5, 11, 0),
-        EndTime: new Date(2023, 0, 5, 14, 50),
-        Subject: 'CH 118 S - General Chemistry II Lab',
-        Location: 'X 204',
-        Description: 'Instructor: Kim, Faith',
-        RecurrenceRule: 'FREQ=WEEKLY;BYDAY=TH'
+        courseId: "CS 115",
+        courseName: "Intro to Computer Science",
+        sections:
+            [{
+                Section: "A",
+                StartTime: new Date(2023, 0, 2, 9, 0),
+                EndTime: new Date(2023, 0, 5, 9, 50),
+                Location: 'BC 104',
+                Description: 'Instructor: Nicolosi, Antonio',
+                RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
+            },
+            {
+                Section: "B",
+                StartTime: new Date(2023, 0, 2, 13, 0),
+                EndTime: new Date(2023, 0, 5, 13, 50),
+                Location: 'K 228',
+                Description: 'Instructor: Nicolosi, Antonio',
+                RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
+            },
+            {
+                Section: "C",
+                StartTime: new Date(2023, 0, 2, 11, 0),
+                EndTime: new Date(2023, 0, 5, 11, 50),
+                Location: 'GS 122',
+                Description: 'Instructor: Nicolosi, Antonio',
+                RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
+            }]
     }
+
 ]
