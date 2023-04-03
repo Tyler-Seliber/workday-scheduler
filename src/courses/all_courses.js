@@ -36,7 +36,7 @@ export const course_list = [
             [{
                 Section: "A",
                 StartTime: new Date(2023, 0, 2, 9, 0),
-                EndTime: new Date(2023, 0, 5, 9, 50),
+                EndTime: new Date(2023, 0, 2, 9, 50),
                 Location: 'BC 104',
                 Description: 'Instructor: Nicolosi, Antonio',
                 RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
@@ -44,7 +44,7 @@ export const course_list = [
             {
                 Section: "B",
                 StartTime: new Date(2023, 0, 2, 13, 0),
-                EndTime: new Date(2023, 0, 5, 13, 50),
+                EndTime: new Date(2023, 0, 2, 13, 50),
                 Location: 'K 228',
                 Description: 'Instructor: Nicolosi, Antonio',
                 RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
@@ -52,7 +52,7 @@ export const course_list = [
             {
                 Section: "C",
                 StartTime: new Date(2023, 0, 2, 11, 0),
-                EndTime: new Date(2023, 0, 5, 11, 50),
+                EndTime: new Date(2023, 0, 2, 11, 50),
                 Location: 'GS 122',
                 Description: 'Instructor: Nicolosi, Antonio',
                 RecurrenceRule: 'FREQ=WEEKLY;BYDAY=MO,WE,FR'
