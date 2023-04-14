@@ -46,12 +46,18 @@ export default function App() {
   
 
   const selectCourseSection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let dictionary = selection
-    setSelection({ ...dictionary, [event.target.name]: (event.target as HTMLInputElement).value})
     let courseId = event.target.name.substring(0, event.target.name.indexOf('-'))
     let section = event.target.name.substring(event.target.name.indexOf('-') + 1)
     let courseObject = selected_courses.find((c) => c.courseId === courseId)
     let sectionObject = courseObject?.sections.find((s: any) => s.Section === section)
+    let dictionary = selection
+
+    if (courseId in dictionary) {
+      dictionary[courseId] = (event.target as HTMLInputElement).value
+      setSelection(dictionary)
+    }else{
+      setSelection({ ...dictionary, [courseId]: (event.target as HTMLInputElement).value})
+    }
     setSection([{
       Subject: courseObject.courseId + sectionObject.Section + " - " + courseObject.courseName,
       StartTime: sectionObject.StartTime,
@@ -112,13 +118,13 @@ export default function App() {
                         {e.sections.map((s: any) => (
                         
                             <RadioGroup
-                              key={e.courseId + s.Section}
-                              aria-labelledby={e.courseId}
+                              key={e.courseId + "-" + s.Section}
+                              aria-labelledby={e.courseId + "-" + s.Section}
                               name={e.courseId + "-" + s.Section}
-                              value={selection[e.courseId + "-" + s.Section]}
+                              value={selection[e.courseId]}
                               onChange={selectCourseSection}
                             >
-                              <FormControlLabel value={s.courseId + s.Section} control={<Radio />} label={s.Section + ' - ' + s.RecurrenceRule.substring(18) + ' ' + s.StartTime.toLocaleTimeString() + ' - ' + s.EndTime.toLocaleTimeString()} />
+                              <FormControlLabel value={e.courseId + "-" + s.Section} control={<Radio />} label={s.Section + ' - ' + s.RecurrenceRule.substring(18) + ' ' + s.StartTime.toLocaleTimeString() + ' - ' + s.EndTime.toLocaleTimeString()} />
                             </RadioGroup>
                             // <Radio
                             //   checked={selection === 'a'}
