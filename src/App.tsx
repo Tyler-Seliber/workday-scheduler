@@ -15,7 +15,7 @@ import { styled } from '@mui/material/styles';
 import { Agenda, Day, EventSettingsModel, Inject, Month, ScheduleComponent, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
 import React, { useState } from 'react';
 import './App.css';
-import { course_list } from './courses/all_courses';
+import { course_list } from './all_courses';
 
 export default function App() {
   // Variable that holds the selected course sections
