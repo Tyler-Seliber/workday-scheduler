@@ -13,23 +13,32 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import { Agenda, Day, EventSettingsModel, Inject, Month, ScheduleComponent, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { course_list } from './all_courses';
 
 export default function App() {
   // Variable that holds the selected course sections
-  const [selected_sections, setSection] = useState([{
-    Subject: "CH 117 A - General Chemistry Lab I",
-    StartTime: new Date(2023, 0, 5, 11, 0),
-    EndTime: new Date(2023, 0, 5, 14, 50),
-    Location: 'X 204',
-    Description: 'Instructor: Kim, Faith',
-    RecurrenceRule: 'FREQ=WEEKLY;BYDAY=TH'
-  }]);
+  const [selected_sections, setSection] = useState({} as { [key: string]: string});
+
+  const [result, setResult] = useState([] as any[]);
+  const [selection, setSelection] = useState({} as { [key: string]: 
+    {
+      Subject: string,
+      StartTime: Date,
+      EndTime: Date,
+      Location: string,
+      Description: string,
+      RecurrenceRule: string
+    }
+  });
+  const [selected_courses, set_selected_courses] = useState([] as any[]);
+  const [sec, set_sec] = useState<any[]>([]);
+
+
 
   // Selected course sections to be displayed by the schedule view
-  var localData: EventSettingsModel = { dataSource: selected_sections };
+  var localData: EventSettingsModel = { dataSource: result };
 
   // Course Selection View:
   const Item = styled(Paper)(({ theme }) => ({
@@ -43,7 +52,9 @@ export default function App() {
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   let selected_courses_titles: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | JSX.Element[] | null | undefined = [];
 
-  
+  useEffect(() => {
+    setResult(Object.values(selection))
+}, [selection]);
 
   const selectCourseSection = (event: React.ChangeEvent<HTMLInputElement>) => {
     let courseId = event.target.name.substring(0, event.target.name.indexOf('-'))
@@ -51,26 +62,36 @@ export default function App() {
     let courseObject = selected_courses.find((c) => c.courseId === courseId)
     let sectionObject = courseObject?.sections.find((s: any) => s.Section === section)
     let dictionary = selection
-
+    let radioDictionary = selected_sections
     if (courseId in dictionary) {
-      dictionary[courseId] = (event.target as HTMLInputElement).value
+      dictionary[courseId] = {
+        Subject: courseObject.courseId + sectionObject.Section + " - " + courseObject.courseName,
+        StartTime: sectionObject.StartTime,
+        EndTime: sectionObject.EndTime,
+        Location: sectionObject.Location,
+        Description: sectionObject.Description,
+        RecurrenceRule: sectionObject.RecurrenceRule
+      }
+      radioDictionary[courseId] = (event.target as HTMLInputElement).value
+      setSection(radioDictionary)
       setSelection(dictionary)
     }else{
-      setSelection({ ...dictionary, [courseId]: (event.target as HTMLInputElement).value})
-    }
-    setSection([{
-      Subject: courseObject.courseId + sectionObject.Section + " - " + courseObject.courseName,
-      StartTime: sectionObject.StartTime,
-      EndTime: sectionObject.EndTime,
-      Location: sectionObject.Location,
-      Description: sectionObject.Description,
-      RecurrenceRule: sectionObject.RecurrenceRule
-    }])
-  }
-  const [selection, setSelection] = useState({} as { [key: string]: string });
-  const [selected_courses, set_selected_courses] = useState<any[]>([]);
-  const [sec, set_sec] = useState<any[]>([]);
 
+      setSection({ ...radioDictionary, [courseId]: (event.target as HTMLInputElement).value })
+      setSelection({ ...dictionary, [courseId]: {
+        Subject: courseObject.courseId + sectionObject.Section + " - " + courseObject.courseName,
+        StartTime: sectionObject.StartTime,
+        EndTime: sectionObject.EndTime,
+        Location: sectionObject.Location,
+        Description: sectionObject.Description,
+        RecurrenceRule: sectionObject.RecurrenceRule
+      }})
+    }
+   
+    setResult(Object.values(selection))
+    
+  }
+ 
   return (
     <div className="App">
       <header className="App-header">
@@ -85,6 +106,19 @@ export default function App() {
                 disableCloseOnSelect
                 onChange={(_event, value) => {
                   set_selected_courses(value);
+                  value.forEach((e: any) => {
+                    if (!(e.courseId in selected_sections)) {
+                      let temp = selected_sections
+                      delete temp[e.courseId]
+                      setSection(temp)
+
+                      let temp2 = selection
+                      delete temp2[e.courseId]
+                      setSelection(temp2)
+
+                      setResult(Object.values(selection))
+                    }
+                  });
                 }}
                 getOptionLabel={(option) => option.courseId + " - " + option.courseName}
                 renderOption={(props, option, { selected }) => (
@@ -121,20 +155,11 @@ export default function App() {
                               key={e.courseId + "-" + s.Section}
                               aria-labelledby={e.courseId + "-" + s.Section}
                               name={e.courseId + "-" + s.Section}
-                              value={selection[e.courseId]}
+                              value={selected_sections[e.courseId]}
                               onChange={selectCourseSection}
                             >
                               <FormControlLabel value={e.courseId + "-" + s.Section} control={<Radio />} label={s.Section + ' - ' + s.RecurrenceRule.substring(18) + ' ' + s.StartTime.toLocaleTimeString() + ' - ' + s.EndTime.toLocaleTimeString()} />
                             </RadioGroup>
-                            // <Radio
-                            //   checked={selection === 'a'}
-                            //   onChange={selectCourseSection}
-                            //   value={selection}
-                            //   name={e.courseId + "-" + s.Section}
-                            //   inputProps={{ 'aria-label': 'A' }}
-                            // >
-                            //   <FormControlLabel value={s.courseId + s.Section} control={<Radio />} label={s.Section + ' - ' + s.RecurrenceRule.substring(18) + ' ' + s.StartTime.toLocaleTimeString() + ' - ' + s.EndTime.toLocaleTimeString()} />
-                            // </Radio>
                           ))}
 
                       </Item>
