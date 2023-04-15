@@ -25,12 +25,10 @@ import {
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { course_list } from "./all_courses";
+import { CheckBox } from "@mui/icons-material";
 
 export default function App() {
   // Variable that holds the selected course sections
-  const [selected_sections, setSection] = useState(
-    {} as { [key: string]: string }
-  );
 
   const [result, setResult] = useState([] as any[]);
   const [selection, setSelection] = useState(
@@ -46,8 +44,9 @@ export default function App() {
     }
   );
   const [selected_courses, set_selected_courses] = useState([] as any[]);
-  const [sec, set_sec] = useState<any[]>([]);
-
+  const [checked, setChecked] = useState(
+    {} as { [key: string]: boolean }
+  );
   // Selected course sections to be displayed by the schedule view
   const [localData, setLocalData] = useState<EventSettingsModel>(
     {} as EventSettingsModel
@@ -75,53 +74,35 @@ export default function App() {
 
   useEffect(() => {
     setLocalData({ dataSource: Object.values(selection) });
-  }, [selection, selected_sections]);
+  }, [checked,selection]);
 
-  // useEffect(() => {
-  //   setResult(Object.values(selection))
-  //   setLocalData({ dataSource: Object.values(selection) })
-
-  // }, [selection]);
+ 
 
   const selectCourseSection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let courseId = event.target.name.substring(
-      0,
-      event.target.name.indexOf("-")
-    );
-    let section = event.target.name.substring(
-      event.target.name.indexOf("-") + 1
+    let courseId = event.target.id.substring(0,event.target.id.indexOf("-"));
+    let section = event.target.id.substring(
+      event.target.id.indexOf("-") + 1
     );
     let courseObject = selected_courses.find((c) => c.courseId === courseId);
     let sectionObject = courseObject?.sections.find(
       (s: any) => s.Section === section
     );
+    let cDict = checked;
+    if (event.target.id in cDict) {
+      cDict[event.target.id] = event.target.checked;
+      setChecked(cDict);
+    } else {
+      setChecked({ ...cDict, [event.target.id]: event.target.checked });
+    }
+    
     let dictionary = selection;
-    let radioDictionary = selected_sections;
-    if (courseId in dictionary) {
-      dictionary[courseId] = {
-        Subject:
-          courseObject.courseId +
+    if (event.target.checked === true) {
+      if (event.target.id in selection === false) {
+        dictionary[courseObject.courseId +
           " - " +
           sectionObject.Section +
           " - " +
-          courseObject.courseName,
-        StartTime: sectionObject.StartTime,
-        EndTime: sectionObject.EndTime,
-        Location: sectionObject.Location,
-        Description: sectionObject.Description,
-        RecurrenceRule: sectionObject.RecurrenceRule,
-      };
-      radioDictionary[courseId] = (event.target as HTMLInputElement).value;
-      setSection(radioDictionary);
-      setSelection(dictionary);
-    } else {
-      setSection({
-        ...radioDictionary,
-        [courseId]: (event.target as HTMLInputElement).value,
-      });
-      setSelection({
-        ...dictionary,
-        [courseId]: {
+          courseObject.courseName] = {
           Subject:
             courseObject.courseId +
             " - " +
@@ -133,9 +114,22 @@ export default function App() {
           Location: sectionObject.Location,
           Description: sectionObject.Description,
           RecurrenceRule: sectionObject.RecurrenceRule,
-        },
-      });
+        };
+        setSelection(dictionary);
+
+    } 
+      
+    } else {
+      if (event.target.id in selection === true) {
+        delete dictionary[courseObject.courseId +
+          " - " +
+          sectionObject.Section +
+          " - " +
+          courseObject.courseName];
+        setSelection(dictionary);
+      }
     }
+
 
     setLocalData({ dataSource: Object.values(selection) });
   };
@@ -161,35 +155,35 @@ export default function App() {
                   set_selected_courses(value);
 
                   let temp3 = Object.values(selection);
-
+                 
                   temp3.forEach((e: any) => {
-                    let s = e["Subject"].substring(
-                      0,
-                      e["Subject"].indexOf("-") - 1
-                    );
-
+                    let num = e["Subject"].indexOf(" - ")
+                    let first = e["Subject"].substring(0, num);
+                    let second = e["Subject"].substring(num+3, e["Subject"].indexOf(" - ", num+1));
+                    let s = first + "-" + second;
+            
                     let tf = false;
-
+                      
                     value.forEach((f: any) => {
-                      if (f.courseId === s) {
+                      if (f.courseId === first) {
                         tf = true;
                         return;
                       }
                     });
 
                     if (tf === false) {
-                      let temp = selected_sections;
                       let temp2 = selection;
-
-                      delete temp[s];
-
-                      setSection(temp);
-
-                      delete temp2[s];
-
+                
+                      let tempCheck = checked;
+                      tempCheck[s] = false;
+               
+                      delete temp2[e["Subject"]];
+                      setChecked(tempCheck);
                       setSelection(temp2);
                     }
                   });
+
+                  
 
                   setLocalData({ dataSource: Object.values(selection) });
                 }}
@@ -224,30 +218,34 @@ export default function App() {
                         <FormLabel id={e.courseId}>
                           {e.courseId} - {e.courseName}
                         </FormLabel>
+                        { e.sections.map((s: any) => (
+                         
+                            <div>
 
-                        {e.sections.map((s: any) => (
-                          <RadioGroup
-                            key={e.courseId + "-" + s.Section}
-                            aria-labelledby={e.courseId + "-" + s.Section}
-                            name={e.courseId + "-" + s.Section}
-                            value={selected_sections[e.courseId]}
-                            onChange={selectCourseSection}
-                          >
+                            
                             <FormControlLabel
+                              key={e.courseId + "-" + s.Section}
                               value={e.courseId + "-" + s.Section}
-                              control={<Radio />}
-                              label={
-                                s.Section +
+                              control={<Checkbox
+                                key={e.courseId + "-" + s.Section}
+                                id={e.courseId + "-" + s.Section}
+                                value={e.courseId + "-" + s.Section}
+                                checked={checked[e.courseId+ "-" + s.Section]}
+                                onChange={selectCourseSection}
+                              />}
+                              label={s.Section +
                                 " - " +
                                 s.RecurrenceRule.substring(18) +
                                 " " +
                                 s.StartTime.toLocaleTimeString() +
                                 " - " +
-                                s.EndTime.toLocaleTimeString()
-                              }
-                            />
-                          </RadioGroup>
-                        ))}
+                                s.EndTime.toLocaleTimeString()}
+                           />
+                          </div>
+
+                        ))
+
+                        }
                       </Item>
                     ))}
                   </div>
