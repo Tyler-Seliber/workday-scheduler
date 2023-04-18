@@ -82,6 +82,7 @@ export default function App() {
  
 
   const selectCourseSection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.checked);
     let courseId = event.target.id.substring(0,event.target.id.indexOf("-"));
     let section = event.target.id.substring(
       event.target.id.indexOf("-") + 1
@@ -100,7 +101,7 @@ export default function App() {
     
     let dictionary = selection;
     if (event.target.checked === true) {
-      if (event.target.id in selection === false) {
+      if (event.target.id in dictionary === false) {
         dictionary[courseObject.courseId +
           " - " +
           sectionObject.Section +
@@ -120,10 +121,14 @@ export default function App() {
         };
         setSelection(dictionary);
 
-    } 
+      } 
       
-    } else {
-      if (event.target.id in selection === true) {
+    } else if (event.target.checked === false){
+      if (courseObject.courseId +
+          " - " +
+          sectionObject.Section +
+          " - " +
+          courseObject.courseName in dictionary === true) {
         delete dictionary[courseObject.courseId +
           " - " +
           sectionObject.Section +
