@@ -1,5 +1,5 @@
-export default function courseList() {
-    var course_list = [
+
+let course_list = [
         {
             courseId: 'MA 121',
             courseName: 'Differential Calculus',
@@ -226,19 +226,19 @@ export default function courseList() {
     for (let course of course_list) {
         for (let section of course.sections) {
             var instruct = section.Instructor
-            if (instruct.length == 0) {
+            if (instruct.length === 0) {
                 instruct = 'None Assigned'
             }
             var prereqs = course.prerequisites.toString()
-            if (prereqs.length == 0) {
+            if (prereqs.length === 0) {
                 prereqs = 'None'
             }
             var coreqs = course.corequisites.toString()
-            if (coreqs.length == 0) {
+            if (coreqs.length === 0) {
                 coreqs = 'None'
             }
             section.Description = 'Instructor: ' + instruct + '\n' + 'Enrolled: ' + section.Enrolled + '/' + section.Capacity + '\n' + 'Credits: ' + course.credits + '\n' + 'Prerequisites: ' + prereqs + '\n' + 'Corequisites: ' + coreqs
         }
     }
-    return course_list;
-}
+export const tempxxx = course_list;
+

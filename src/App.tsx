@@ -12,6 +12,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import { tempxxx } from "./all_courses";
 import {
   Agenda,
   Day,
@@ -25,11 +26,10 @@ import {
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { CheckBox } from "@mui/icons-material";
-import courseList from "./all_courses";
+// import courseList from "./all_courses";
 
 export default function App() {
-  const course_list = courseList();
-  console.log('course_list: ', course_list)
+  // const course_list = courseList();
 
   // Variable that holds the selected course sections
 
@@ -157,10 +157,14 @@ export default function App() {
               <Autocomplete
                 multiple
                 id="checkboxes-tags-demo"
-                options={course_list}
+                options={tempxxx}
                 disableCloseOnSelect
                 onChange={(_event, value) => {
                   set_selected_courses(value);
+                  let te = selected_courses
+                  console.log(te)
+                  console.log("_______________________________________________________")
+                  console.log(value)
 
                   let temp3 = Object.values(selection);
                  
@@ -195,9 +199,7 @@ export default function App() {
 
                   setLocalData({ dataSource: Object.values(selection) });
                 }}
-                getOptionLabel={(option) =>
-                  option.courseId + " - " + option.courseName
-                }
+                getOptionLabel={(option) =>option.courseId + " - " + option.courseName}
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>
                     <Checkbox
