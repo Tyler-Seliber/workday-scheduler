@@ -24,10 +24,13 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { course_list } from "./all_courses";
 import { CheckBox } from "@mui/icons-material";
+import courseList from "./all_courses";
 
 export default function App() {
+  const course_list = courseList();
+  console.log('course_list: ', course_list)
+
   // Variable that holds the selected course sections
 
   const [result, setResult] = useState([] as any[]);
