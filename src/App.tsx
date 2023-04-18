@@ -12,7 +12,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
-import { tempxxx } from "./all_courses";
+import { all_courses } from "./all_courses";
 import {
   Agenda,
   Day,
@@ -157,7 +157,7 @@ export default function App() {
               <Autocomplete
                 multiple
                 id="checkboxes-tags-demo"
-                options={tempxxx}
+                options={all_courses}
                 disableCloseOnSelect
                 onChange={(_event, value) => {
                   set_selected_courses(value);
