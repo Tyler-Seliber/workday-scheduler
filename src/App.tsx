@@ -3,12 +3,9 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Paper from "@mui/material/Paper";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
@@ -25,15 +22,10 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { CheckBox } from "@mui/icons-material";
 // import courseList from "./all_courses";
 
 export default function App() {
-  // const course_list = courseList();
-
   // Variable that holds the selected course sections
-
-  const [result, setResult] = useState([] as any[]);
   const [selection, setSelection] = useState(
     {} as {
       [key: string]: {
@@ -59,27 +51,16 @@ export default function App() {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
+    padding: theme.spacing(2),
+    textAlign: "left",
     color: theme.palette.text.secondary,
   }));
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
-  let selected_courses_titles:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | JSX.Element[]
-    | null
-    | undefined = [];
 
   useEffect(() => {
     setLocalData({ dataSource: Object.values(selection) });
   }, [checked,selection]);
-
- 
 
   const selectCourseSection = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.checked);
@@ -120,7 +101,6 @@ export default function App() {
           RecurrenceRule: sectionObject.RecurrenceRule,
         };
         setSelection(dictionary);
-
       } 
       
     } else if (event.target.checked === false){
@@ -137,7 +117,6 @@ export default function App() {
         setSelection(dictionary);
       }
     }
-
 
     setLocalData({ dataSource: Object.values(selection) });
   };
@@ -216,23 +195,21 @@ export default function App() {
                 )}
               />
 
-              <Box>
+              <Box sx={{ gap: 2 }}>
                 <Stack
-                  spacing={2}
-                  alignItems="flex-start"
+                  direction="column"
                   justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={2}
                 >
                   <div>
                     {selected_courses.map((e) => (
                       <Item key={e.courseId}>
                         <FormLabel id={e.courseId}>
-                          {e.courseId} - {e.courseName}
+                          {e.courseId} - {e.courseName} ({e.credits} Credits)
                         </FormLabel>
                         { e.sections.map((s: any) => (
-                         
-                            <div>
-
-                            
+                          <div>
                             <FormControlLabel
                               key={e.courseId + "-" + s.Section}
                               value={e.courseId + "-" + s.Section}
@@ -244,17 +221,18 @@ export default function App() {
                                 onChange={selectCourseSection}
                               />}
                               label={s.Section +
-                                " - " +
+                                " | " +
                                 s.RecurrenceRule.substring(18) +
                                 " " +
                                 s.StartTime.toLocaleTimeString() +
                                 " - " +
-                                s.EndTime.toLocaleTimeString()}
+                                s.EndTime.toLocaleTimeString() + 
+                                " | Enrolled: " +
+                                s.Enrolled + "/" + s.Capacity
+                                }
                            />
                           </div>
-
                         ))
-
                         }
                       </Item>
                     ))}
