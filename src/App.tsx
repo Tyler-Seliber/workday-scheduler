@@ -9,7 +9,8 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
-import { all_courses } from "./all_courses";
+import { fall2023 } from "./courses/2023_Fall";
+import { summerI2023 } from "./courses/2023_Summer_I";
 import {
   Agenda,
   Day,
@@ -22,7 +23,6 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-// import courseList from "./all_courses";
 
 export default function App() {
   // Variable that holds the selected course sections
@@ -57,6 +57,9 @@ export default function App() {
   }));
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [courseSelectDisabled, setCourseSelectDisabled] = useState(true);
+  const [coursesForSemester, setCoursesForSemester] = useState([] as any[]);
+  const [selectedCourseChips, setSelectedCourseChips] = useState([] as any[]);
 
   useEffect(() => {
     setLocalData({ dataSource: Object.values(selection) });
@@ -121,6 +124,8 @@ export default function App() {
     setLocalData({ dataSource: Object.values(selection) });
   };
 
+  const semesters = ['2023 Summer I', '2023 Fall']
+
   return (
     <div className="App">
       <header className="App-header">
@@ -132,13 +137,38 @@ export default function App() {
             style={{ height: "100vh", overflowY: "scroll" }}
             className="flex-child-left"
           >
+            <Autocomplete
+              id="semester_selection"
+              options={semesters}
+              renderInput={(params) => <TextField {...params} label="Semester" />}
+              onChange={(_event, value) => {
+                // Clear the selected courses and the schedule view
+                set_selected_courses([]);
+                setLocalData({ dataSource: [] })
+                setSelection({});
+                setSelectedCourseChips([]);
+                setCourseSelectDisabled(false)
+                if (value == null) {
+                  setCourseSelectDisabled(true)
+                }
+                else if (value == '2023 Fall') {
+                  setCoursesForSemester(fall2023)
+                }
+                else if (value == '2023 Summer I') {
+                  setCoursesForSemester(summerI2023)
+                }
+              }}
+            />
             <div>
               <Autocomplete
                 multiple
-                id="checkboxes-tags-demo"
-                options={all_courses}
+                disabled={courseSelectDisabled}
+                id="course_selection"
+                value={selectedCourseChips}
+                options={coursesForSemester}
                 disableCloseOnSelect
                 onChange={(_event, value) => {
+                  setSelectedCourseChips(value);
                   set_selected_courses(value);
                   let te = selected_courses
                   console.log(te)
@@ -221,12 +251,12 @@ export default function App() {
                                 onChange={selectCourseSection}
                               />}
                               label={s.Section +
-                                " | " +
-                                s.RecurrenceRule.substring(18) +
-                                " " +
-                                s.StartTime.toLocaleTimeString() +
-                                " - " +
-                                s.EndTime.toLocaleTimeString() + 
+                                (s.StartTime.valueOf() != s.EndTime.valueOf() ? " | " +
+                                  s.RecurrenceRule.substring(18) +
+                                  " " +
+                                  s.StartTime.toLocaleTimeString() +
+                                  " - " +
+                                  s.EndTime.toLocaleTimeString() : "") +
                                 " | Enrolled: " +
                                 s.Enrolled + "/" + s.Capacity
                                 }

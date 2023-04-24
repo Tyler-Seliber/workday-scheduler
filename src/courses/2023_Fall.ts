@@ -1,4 +1,3 @@
-
 let all_courses_raw = [
     {
         courseId: 'CH 115',
@@ -735,5 +734,5 @@ let all_courses_raw = [
             section.Description = 'Instructor: ' + instruct + '\n' + 'Enrolled: ' + section.Enrolled + '/' + section.Capacity + '\n' + 'Credits: ' + course.credits + '\n' + 'Prerequisites: ' + prereqs + '\n' + 'Corequisites: ' + coreqs
         }
     }
-export const all_courses = all_courses_raw;
+export const fall2023 = all_courses_raw;
 
