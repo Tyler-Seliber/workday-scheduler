@@ -281,6 +281,7 @@ export default function App() {
                   currentView="WorkWeek"
                   selectedDate={new Date(2023, 0, 1)}
                   eventSettings={localData}
+                  readonly={true}
                 >
                   <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
                 </ScheduleComponent>
