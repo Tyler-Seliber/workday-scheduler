@@ -1,46 +1,70 @@
-# Getting Started with Create React App
+# Stevens Workday Scheduler
+The Stevens Workday Scheduler is a tool designed to assist students and faculty at Stevens with planning their course schedules. It modernizes the concept behind the original SIT Scheduler that has been decomissioned after the university's switch to Workday for course registration.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Features include:
+- Semester Selection
+- Quick search for all courses being offered in that semester
+- Select multiple sections to easily eliminate conflicting times
+- View all the information about a course, including the meeting pattern, location, instructor, credits, pre/corequisites, and enrollment capacity
 
-## Available Scripts
+![Workday Scheduler](https://user-images.githubusercontent.com/42685071/235377375-7baec615-e541-49d6-adf2-5ab4bb480753.png)
 
-In the project directory, you can run:
+## Development
+This project was developed for CS 545 - Human Computer Interaction by:
+- Tyler Seliber: [Tyler-Seliber](https://github.com/Tyler-Seliber)
+- Hyeonu Ju: [Naed123](https://github.com/Naed123)
+- Murad Arslaner: [muradarslaner](https://github.com/muradarslaner)
+- Mya Phu: [mxfu](https://github.com/mxfu)
 
-### `npm start`
+__Note: The team made consistent use of pair programming for this project, so the git commit history may not accurately reflect actual team member participation. All team members equally contributed to the development of this project.__
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Build Instructions
+1. Clone this repository: `git clone https://github.com/Tyler-Seliber/workday-scheduler.git`
+2. Install Node dependencies: `npm install`
+3. Start the webserver: `npm start`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The website will be available at localhost:3000 by default.
 
-### `npm test`
+## Adding courses and sections
+Courses are added in a dictionary format for their respective semesters. In the `src/courses` folder are .ts files that contain the available courses for different semesters/terms. The files follow the naming scheme `2023_Fall.ts`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Courses must be added to the `all_courses_raw` variable in the following format:
+```ts
+{
+        courseId: 'SSW 423',
+        courseName: 'Engineering Design VII',
+        credits: 3,
+        prerequisites: ['SSW 322 - Engineering Design VI'],
+        corequisites: ['IDE 401 - Senior Innovation-II:Value Proposition'],
+        courseDescription: 'This is the first course of a year long, two-course sequence which involves the students in a small-team Software Engineering project. The problem for the project is taken from industry, business, government or a not-for-profit organization. Each student team works with a client and is expected to collect data, analyze it and develop a design by the end of the first semester. In the second semester the design solution of the problem is completed and a written report is submitted for binding. During the year, oral and written progress reports are presented to peers, faculty and clients. The total project involves the application of the subject areas covered in the SSW 322 Software Design Evolution course, as well as skills learned in the other technical and non-technical courses of the Software Engineering curriculum.',
+        sections:
+            [
+                {
+                    Section: 'A',
+                    StartTime: new Date(2023, 0, 2, 14, 30),
+                    EndTime: new Date(2023, 0, 2, 16, 20),
+                    Location: 'McLean 106',
+                    Enrolled: 18,
+                    Capacity: 30,
+                    Instructor: 'David Darian Muresan',
+                    RecurrenceRule: 'FREQ=WEEKLY;BYDAY=TU,TH',
+                    Description: ''
+                }
+            ]
+    }
+```
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+__Notes__
+- If there are no pre or corequisites, those fields can be left as empty arrays `[]`
+- The `StartTime` and `EndTime` in each course section must have `2023`, `0`, and `2` as the first three arguments. This will ensure the courses show up correctly in the schedule view. The fourth and fifths arguments are the hour and minutes for the times.
+  - The only exception is for web sections, which must have both the start and end times as `new Date(2023, 0, 0, 0, 0)`
+- The  `Instructor` can be left as an empty string `''` if there is none assigned
+- The `RecurrenceRule` must start with `FREQ=WEEKLY;BYDAY=` as this allows sections to be repeated on multiple days of the week. The day codes are as follows:
+  - MO = Monday
+  - TU = Tuesday
+  - WE = Wednesday
+  - TH = Thursday
+  - FR = Friday
+  - SA = Saturday
+  - SU = Sunday
+- Leave the `Description` key empty for each section. This is automatically generated by the program to contain the additional information about each course section.
